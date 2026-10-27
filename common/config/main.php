@@ -11,7 +11,9 @@ return [
         '@npm'   => '@vendor/npm-asset',
     ],
     'vendorPath' => dirname(dirname(__DIR__)) . '/vendor',
-    'components' => [
+    'components' => ['authManager' => [
+            'class' => \yii\rbac\DbManager::class,
+        ],
         'cache' => [
             'class' => \yii\caching\FileCache::class,
         ],
