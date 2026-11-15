@@ -17,6 +17,7 @@ class SignupForm extends Model
     public string $username = '';
     public string $email = '';
     public string $password = '';
+    
     /**
      * {@inheritdoc}
      */
@@ -55,15 +56,26 @@ class SignupForm extends Model
         }
 
         $user = new User();
-
         $user->username = $this->username;
         $user->email = $this->email;
-
         $user->setPassword($this->password);
         $user->generateAuthKey();
         $user->generateEmailVerificationToken();
 
-        return $user->save() && $this->sendEmail($mailer, $user, $supportEmail, $appName);
+        // Se o utilizador for guardado com sucesso na base de dados
+        if ($user->save()) {
+            // Atribuir automaticamente o papel 'clienteAutenticado' definido no RbacController
+            $auth = Yii::$app->authManager;
+            $role = $auth->getRole('clienteAutenticado');
+            if ($role) {
+                $auth->assign($role, $user->id);
+            }
+
+            // Envia o email de confirmação
+            return $this->sendEmail($mailer, $user, $supportEmail, $appName);
+        }
+
+        return null;
     }
 
     /**

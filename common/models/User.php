@@ -33,6 +33,17 @@ class User extends ActiveRecord implements IdentityInterface
     /**
      * {@inheritdoc}
      */
+
+
+
+
+    public static function find()
+    {
+        return parent::find()->andWhere(['<>', 'status', self::STATUS_DELETED]);
+    }
+
+
+    
     public static function tableName(): string
     {
         return '{{%user}}';
