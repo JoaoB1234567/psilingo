@@ -2,11 +2,13 @@
 
 namespace backend\controllers;
 
+use Yii;
 use common\models\User;
 use backend\models\UserSearch;
+use yii\filters\AccessControl;
+use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
 
 /**
  * UserController implements the CRUD actions for User model.
@@ -21,8 +23,33 @@ class UserController extends Controller
         return array_merge(
             parent::behaviors(),
             [
+                'access' => [
+                    'class' => AccessControl::class,
+                    'rules' => [
+                        [
+                            'actions' => ['index', 'view'],
+                            'allow' => true,
+                            'roles' => ['viewUsers'],
+                        ],
+                        [
+                            'actions' => ['create'],
+                            'allow' => true,
+                            'roles' => ['createUser'],
+                        ],
+                        [
+                            'actions' => ['update'],
+                            'allow' => true,
+                            'roles' => ['updateUser'],
+                        ],
+                        [
+                            'actions' => ['delete'], // Soft Delete (altera o status)
+                            'allow' => true,
+                            'roles' => ['deleteUser'],
+                        ],
+                    ],
+                ],
                 'verbs' => [
-                    'class' => VerbFilter::className(),
+                    'class' => VerbFilter::class,
                     'actions' => [
                         'delete' => ['POST'],
                     ],
@@ -69,12 +96,21 @@ class UserController extends Controller
     {
         $model = new User();
 
-        if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
+        if ($this->request->isPost && $model->load($this->request->post())) {
+            $password = $this->request->post('password');
+            $roleName = $this->request->post('role', 'clienteAutenticado');
+
+            $model->setPassword($password);
+            $model->generateAuthKey();
+
+            if ($model->save()) {
+                $auth = Yii::$app->authManager;
+                $role = $auth->getRole($roleName);
+                if ($role) {
+                    $auth->assign($role, $model->id);
+                }
                 return $this->redirect(['view', 'id' => $model->id]);
             }
-        } else {
-            $model->loadDefaultValues();
         }
 
         return $this->render('create', [
@@ -92,19 +128,31 @@ class UserController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $auth = Yii::$app->authManager;
+        $roles = $auth->getRolesByUser($model->id);
+        $currentRole = !empty($roles) ? array_key_first($roles) : 'clienteAutenticado';
 
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
+            $newRoleName = $this->request->post('role');
+            if ($newRoleName) {
+                $auth->revokeAll($model->id);
+                $newRole = $auth->getRole($newRoleName);
+                if ($newRole) {
+                    $auth->assign($newRole, $model->id);
+                }
+            }
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
         return $this->render('update', [
             'model' => $model,
+            'currentRole' => $currentRole,
         ]);
     }
 
     /**
-     * Deletes an existing User model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
+     * Soft Delete: em vez de apagar fisicamente, altera o status do utilizador.
+     * If successful, the browser will be redirected to the 'index' page.
      * @param int $id
      * @return \yii\web\Response
      * @throws NotFoundHttpException if the model cannot be found
@@ -112,9 +160,8 @@ class UserController extends Controller
     public function actionDelete($id)
     {
         $model = $this->findModel($id);
-    
-         // Soft Delete: em vez de apagar fisicamente, alteramos o status para 0 (inativo)
-        $model->status = 0; 
+
+        $model->status = User::STATUS_DELETED;
         $model->save(false);
 
         return $this->redirect(['index']);

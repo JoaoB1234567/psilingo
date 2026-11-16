@@ -31,9 +31,14 @@ class SiteController extends Controller
                         'allow' => true,
                     ],
                     [
-                        'actions' => ['logout', 'index'],
+                        'actions' => ['logout'],
                         'allow' => true,
                         'roles' => ['@'],
+                    ],
+                    [
+                        'actions' => ['index'],
+                        'allow' => true,
+                        'roles' => ['accessBackend'], // bloqueia quem só tem 'clienteAutenticado'
                     ],
                 ],
             ],
@@ -76,14 +81,23 @@ class SiteController extends Controller
     public function actionLogin(): string|Response
     {
         if (!Yii::$app->user->isGuest) {
-            return $this->goHome();
+            return Yii::$app->user->can('accessBackend')
+                ? $this->goHome()
+                : $this->redirect(Yii::$app->params['frontendUrl']);
         }
 
         $this->layout = 'blank';
 
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
+            if (Yii::$app->user->can('accessBackend')) {
+                return $this->goBack();
+            }
+
+            // Cliente: termina a sessão do backend e envia para o index do front-office
+            Yii::$app->user->logout();
+
+            return $this->redirect(Yii::$app->params['frontendUrl']);
         }
 
         $model->password = '';
