@@ -6,35 +6,89 @@ $this->title = 'Psilingo';
 ?>
 <div class="site-index">
 
-    <div class="p-5 mb-4 bg-transparent rounded-3">
-        <div class="container-fluid py-5 text-center text-sm-start" style="background: linear-gradient(135deg, #22c55e 0%, #3b82f6 100%); border-radius: 1rem; padding: 3rem; color: white;">
-            <h1 class="display-4 fw-bold">Bem-vindo ao Psilingo!</h1>
-            <p class="fs-4 col-md-8">A plataforma interativa de aprendizagem de línguas feita a pensar no teu futuro académico e profissional. Rápida, intuitiva e moderna.</p>
-            <p>
-                <a class="btn btn-lg btn-light fw-bold text-dark px-4 me-2" href="<?= \yii\helpers\Url::to(['/site/about']) ?>">Sobre Nós</a>
-                <a class="btn btn-lg btn-outline-light px-4" href="<?= \yii\helpers\Url::to(['/site/signup']) ?>">Criar Conta</a>
-            </p>
+    <!-- HERO SECTION (Título simples sem o retângulo verde/azul) -->
+    <div class="p-5 mb-4 bg-transparent rounded-3 text-center">
+        <div class="container-fluid py-3">
+            <h1 class="display-4 fw-bold text-light">Bem-vindo ao Psilingo!</h1>
+            <p class="fs-4 text-secondary">A plataforma interativa de aprendizagem de línguas feita a pensar no teu futuro académico e profissional.</p>
         </div>
     </div>
 
     <div class="body-content">
 
-        <div class="row">
+        <!-- SEÇÃO 1: AS TRÊS LÍNGUAS DO PROJETO -->
+        <div class="row text-light mb-5">
+            <h2 class="text-center mb-4">Idiomas Disponíveis</h2>
+            
             <div class="col-lg-4 mb-3">
-                <h2>Módulos de Idiomas</h2>
-                <p>Explora os vários cursos de línguas disponíveis, desenhados com conteúdos dinâmicos para acelerar o teu desenvolvimento e prática diária.</p>
-                <p><a class="btn btn-outline-secondary" href="#">Ver Cursos &raquo;</a></p>
+                <div class="card bg-dark border-secondary text-light h-100 p-4 text-center">
+                    <h3 class="h4">Inglês</h3>
+                    <p class="text-secondary">Explora conteúdos dinâmicos de inglês estruturados por níveis CEFR para acelerar a tua fluência profissional e diária.</p>
+                    <p><a class="btn btn-outline-light" href="#">Explorar Inglês &raquo;</a></p>
+                </div>
             </div>
+
             <div class="col-lg-4 mb-3">
-                <h2>Gestão de Perfil</h2>
-                <p>Acompanha o teu progresso, gere as tuas preferências de aprendizagem e personaliza a tua experiência de forma simples e segura na plataforma.</p>
-                <p><a class="btn btn-outline-secondary" href="<?= \yii\helpers\Url::to(['/site/login']) ?>">Área de Utilizador &raquo;</a></p>
+                <div class="card bg-dark border-secondary text-light h-100 p-4 text-center">
+                    <h3 class="h4">Francês</h3>
+                    <p class="text-secondary">Desenvolve competências de leitura, vocabulário e gramática em francês com exercícios práticos e intuitivos.</p>
+                    <p><a class="btn btn-outline-light" href="#">Explorar Francês &raquo;</a></p>
+                </div>
             </div>
-            <div class="col-lg-4">
-                <h2>Suporte e Ajuda</h2>
-                <p>Tens alguma dúvida sobre o funcionamento do Psilingo ou precisas de entrar em contacto com a nossa equipa de suporte? Estamos aqui para ajudar.</p>
-                <p><a class="btn btn-outline-secondary" href="<?= \yii\helpers\Url::to(['/site/contact']) ?>">Contactar &raquo;</a></p>
+
+            <div class="col-lg-4 mb-3">
+                <div class="card bg-dark border-secondary text-light h-100 p-4 text-center">
+                    <h3 class="h4">Espanhol</h3>
+                    <p class="text-secondary">Aprende espanhol de forma autónoma e interativa, focando em cenários reais do dia a dia e académico.</p>
+                    <p><a class="btn btn-outline-light" href="#">Explorar Espanhol &raquo;</a></p>
+                </div>
             </div>
+        </div>
+
+        <hr class="border-secondary my-5">
+
+        <!-- SEÇÃO 2: QUEM FEZ O PROJETO (EQUIPA) -->
+        <div class="row text-light mb-5">
+            <h2 class="text-center mb-4">Quem Fez o Projeto</h2>
+            
+            <!-- Autor 1 -->
+            <div class="col-lg-4 mb-4">
+                <div class="card bg-dark border-secondary text-light h-100">
+                    <img src="https://via.placeholder.com/400x200" class="card-img-top" alt="Foto do Autor">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">João</h5>
+                        <p class="card-text text-secondary">Estudante de Programação de Sistemas de Informação, responsável pelo desenvolvimento backend, base de dados e integração RBAC.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Autor 2 -->
+            <div class="card bg-dark border-secondary text-light h-100"> <!-- Correção de estrutura do card -->
+            <div class="col-lg-12 mb-4"> <!-- Ajustado para grid correto -->
+                </div>
+            </div> -->
+
+            <div class="col-lg-4 mb-4">
+                <div class="card bg-dark border-secondary text-light h-100">
+                    <img src="https://via.placeholder.com/400x200" class="card-img-top" alt="Foto do Colega">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Colega 1</h5>
+                        <p class="card-text text-secondary">Focado na estruturação de conteúdos pedagógicos, interfaces do front-office e design responsivo da plataforma.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Autor 3 -->
+            <div class="col-lg-4 mb-4">
+                <div class="card bg-dark border-secondary text-light h-100">
+                    <img src="https://via.placeholder.com/400x200" class="card-img-top" alt="Foto do Colega">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Colega 2</h5>
+                        <p class="card-text text-secondary">Encarregue pelos testes, documentação do projeto, fluxos de autenticação e validação de regras de negócio.</p>
+                    </div>
+                </div>
+            </div>
+
         </div>
 
     </div>
