@@ -39,19 +39,37 @@ class SiteController extends Controller
     /**
      * {@inheritdoc}
      */
-    public function behaviors(): array
+    public function behaviors()
     {
         return [
             'access' => [
                 'class' => AccessControl::class,
-                'only' => ['logout', 'signup'],
                 'rules' => [
                     [
-                        'actions' => ['signup'],
+                        // Páginas públicas + registo + recuperação de conta (visitantes '?' e autenticados '@')
+                        'actions' => [
+                            'index',
+                            'about',
+                            'contact',
+                            'error',
+                            'captcha',
+                            'signup',
+                            'request-password-reset',
+                            'reset-password',
+                            'verify-email',
+                            'resend-verification-email',
+                        ],
+                        'allow' => true,
+                        'roles' => ['?', '@'],
+                    ],
+                    [
+                        // Apenas visitantes não autenticados podem aceder ao login
+                        'actions' => ['login'],
                         'allow' => true,
                         'roles' => ['?'],
                     ],
                     [
+                        // Apenas utilizadores autenticados podem fazer logout
                         'actions' => ['logout'],
                         'allow' => true,
                         'roles' => ['@'],
