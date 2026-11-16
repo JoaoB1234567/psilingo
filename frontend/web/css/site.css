@@ -75,8 +75,6 @@ a.desc:after {
     color: var(--bs-navbar-hover-color);
 }
 
-
-
 /* footer logo: light logo by default (light bg-body-tertiary), dark logo for dark theme */
 .footer-logo-dark { display: none; }
 
@@ -418,4 +416,296 @@ a.desc:after {
 
 [data-bs-theme="dark"] .extension-card:hover {
     box-shadow: 0 0 0 1px var(--bs-border-color), 0 8px 24px rgba(0, 0, 0, .4) !important;
+}
+
+/* ==========================================================
+   Psilingo – Modern Dark EdTech (página inicial)
+   ========================================================== */
+
+:root {
+    --ps-bg-0: #0b0f19;
+    --ps-bg-1: #111827;
+    --ps-text: #f3f4f6;
+    --ps-text-soft: #cbd5e1;   /* contraste ~11:1 sobre #0b0f19 */
+    --ps-border: rgba(255, 255, 255, 0.08);
+    --ps-border-hover: rgba(129, 140, 248, 0.55);
+    --ps-accent-1: #6366f1;    /* indigo */
+    --ps-accent-2: #a855f7;    /* violeta */
+    --ps-accent-3: #34d399;    /* esmeralda (apoio) */
+}
+
+/* ---------- Fundo global em camadas ---------- */
+body {
+    color: var(--ps-text);
+    background-color: var(--ps-bg-0);
+    background-image:
+        radial-gradient(900px 500px at 15% -10%, rgba(99, 102, 241, 0.18), transparent 60%),
+        radial-gradient(700px 450px at 90% 0%, rgba(168, 85, 247, 0.14), transparent 60%),
+        linear-gradient(180deg, var(--ps-bg-0) 0%, var(--ps-bg-1) 100%);
+    background-attachment: fixed;
+}
+
+/* ---------- Navegação / footer em harmonia ---------- */
+#header .navbar,
+.navbar.navbar-dark {
+    background: rgba(11, 15, 25, 0.72) !important;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--ps-border);
+}
+.navbar .nav-link { color: var(--ps-text-soft); transition: color .2s ease; }
+.navbar .nav-link:hover,
+.navbar .nav-link:focus-visible { color: #fff; }
+
+/* ---------- Hero ---------- */
+.psilingo-home .ps-hero {
+    position: relative;
+    isolation: isolate;
+    padding: 2rem 0 1rem;
+}
+.psilingo-home .ps-hero::before {
+    content: "";
+    position: absolute;
+    inset: -20% 0 auto 0;
+    height: 520px;
+    margin: 0 auto;
+    max-width: 900px;
+    background: radial-gradient(closest-side, rgba(99, 102, 241, 0.35), rgba(168, 85, 247, 0.12) 55%, transparent 75%);
+    filter: blur(30px);
+    z-index: -1;
+    pointer-events: none;
+}
+.psilingo-home .ps-hero-title {
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.08;
+    font-size: clamp(2.2rem, 6vw, 4rem);
+    color: #fff;
+}
+.psilingo-home .ps-gradient-text {
+    background: linear-gradient(90deg, #818cf8 0%, #c084fc 55%, #34d399 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+}
+.psilingo-home .ps-lead {
+    max-width: 40rem;
+    margin-top: 1.25rem;
+    font-size: clamp(1.05rem, 2.2vw, 1.3rem);
+    line-height: 1.6;
+    color: var(--ps-text-soft);
+}
+
+/* ---------- Badges ---------- */
+.psilingo-home .ps-badge {
+    display: inline-block;
+    padding: .35rem .85rem;
+    border-radius: 999px;
+    font-size: .8rem;
+    font-weight: 600;
+    color: var(--ps-text-soft);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--ps-border);
+}
+.psilingo-home .ps-badge-accent {
+    color: #c7d2fe;
+    background: rgba(99, 102, 241, 0.14);
+    border-color: rgba(129, 140, 248, 0.35);
+}
+
+/* ---------- Botões ---------- */
+.psilingo-home .ps-btn-primary {
+    color: #fff;
+    font-weight: 600;
+    border: 0;
+    border-radius: .75rem;
+    background: linear-gradient(135deg, var(--ps-accent-1), var(--ps-accent-2));
+    box-shadow: 0 8px 24px rgba(99, 102, 241, 0.35);
+    transition: transform .2s ease, box-shadow .2s ease, filter .2s ease;
+}
+.psilingo-home .ps-btn-primary:hover {
+    color: #fff;
+    transform: translateY(-2px);
+    filter: brightness(1.08);
+    box-shadow: 0 12px 30px rgba(99, 102, 241, 0.45);
+}
+.psilingo-home .ps-btn-outline {
+    color: var(--ps-text);
+    font-weight: 600;
+    border-radius: .75rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.03);
+    transition: background .2s ease, border-color .2s ease, transform .2s ease;
+}
+.psilingo-home .ps-btn-outline:hover {
+    color: #fff;
+    background: rgba(129, 140, 248, 0.14);
+    border-color: var(--ps-border-hover);
+}
+.psilingo-home .ps-btn-primary:focus-visible,
+.psilingo-home .ps-btn-outline:focus-visible {
+    outline: 2px solid #a5b4fc;
+    outline-offset: 3px;
+}
+
+/* ---------- Títulos de secção ---------- */
+.psilingo-home .ps-section-title {
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: #fff;
+    margin-bottom: .5rem;
+}
+.psilingo-home .ps-section-sub {
+    max-width: 34rem;
+    margin-bottom: 2.5rem;
+    color: var(--ps-text-soft);
+}
+.psilingo-home .body-content > section + section { padding-top: 2rem; }
+
+/* ---------- Cards glassmorphism ---------- */
+.psilingo-home .ps-card {
+    padding: 2rem 1.5rem;
+    border-radius: 1.25rem;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--ps-border);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+    transition: transform .25s ease, border-color .25s ease, box-shadow .25s ease;
+}
+.psilingo-home .ps-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--ps-border-hover);
+    box-shadow: 0 16px 40px rgba(99, 102, 241, 0.2);
+}
+.psilingo-home .ps-card h3 { color: #fff; font-weight: 700; }
+.psilingo-home .ps-text {
+    color: var(--ps-text-soft);
+    line-height: 1.65;
+    margin-bottom: 1.5rem;
+}
+
+/* ---------- Ícone de língua ---------- */
+.psilingo-home .ps-icon {
+    display: grid;
+    place-items: center;
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: 1rem;
+    color: #c7d2fe;
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.28), rgba(168, 85, 247, 0.2));
+    border: 1px solid rgba(129, 140, 248, 0.35);
+}
+
+/* ---------- Avatares da equipa ---------- */
+.psilingo-home .ps-avatar {
+    display: grid;
+    place-items: center;
+    width: 5.5rem;
+    height: 5.5rem;
+    border-radius: 50%;
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #fff;
+    background: linear-gradient(135deg, var(--ps-accent-1), var(--ps-accent-2));
+    box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.06), 0 10px 24px rgba(99, 102, 241, 0.35);
+}
+.psilingo-home .ps-avatar-2 { background: linear-gradient(135deg, #8b5cf6, #ec4899); }
+.psilingo-home .ps-avatar-3 { background: linear-gradient(135deg, #10b981, #6366f1); }
+
+/* ---------- Responsivo ---------- */
+@media (max-width: 575.98px) {
+    .psilingo-home .ps-card { padding: 1.5rem 1.25rem; }
+    .psilingo-home .ps-hero .btn { width: 100%; }
+}
+
+/* Scroll suave para os botões do Hero */
+html { scroll-behavior: smooth; }
+#idiomas, #equipa { scroll-margin-top: 5rem; }
+
+/* Respeitar preferência de movimento reduzido */
+@media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .psilingo-home .ps-card,
+    .psilingo-home .ps-btn-primary,
+    .psilingo-home .ps-btn-outline { transition: none; }
+    .psilingo-home .ps-card:hover,
+    .psilingo-home .ps-btn-primary:hover { transform: none; }
+}
+
+/* ---------- Página Sobre ---------- */
+.psilingo-home .ps-mission {
+    max-width: 52rem;
+    padding: 2.5rem;
+}
+.psilingo-home .ps-mission:hover {
+    transform: none;
+    border-color: var(--ps-border);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+}
+.psilingo-home .ps-mission .ps-text { margin-bottom: 1rem; }
+@media (max-width: 575.98px) {
+    .psilingo-home .ps-mission { padding: 1.5rem 1.25rem; }
+}
+
+/* ---------- Footer ---------- */
+.ps-footer {
+    background: #080b12;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    color: var(--ps-text-soft);
+}
+.ps-footer .ps-footer-brand {
+    font-size: 1.5rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: #fff;
+    text-decoration: none;
+}
+.ps-footer .ps-footer-slogan {
+    max-width: 22rem;
+    margin-top: .75rem;
+    line-height: 1.6;
+}
+.ps-footer .ps-footer-title {
+    font-size: .95rem;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 1rem;
+}
+.ps-footer .ps-footer-links {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+.ps-footer .ps-footer-links li + li { margin-top: .5rem; }
+.ps-footer .ps-footer-links a {
+    color: var(--ps-text-soft);
+    text-decoration: none;
+    transition: color .2s ease;
+}
+.ps-footer .ps-footer-links a:hover,
+.ps-footer .ps-footer-links a:focus-visible { color: #fff; }
+.ps-footer .ps-footer-bottom {
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 1.25rem 0;
+    font-size: .875rem;
+    color: #94a3b8;
+}
+
+/* ---------- Ícones em forma de bandeira ---------- */
+.psilingo-home .ps-icon.ps-flag {
+    width: 4rem;
+    height: 4rem;
+    padding: 0;
+    overflow: hidden;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.18);
+    background: none;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+}
+.psilingo-home .ps-flag svg {
+    display: block;
+    width: 100%;
+    height: 100%;
 }
