@@ -79,7 +79,7 @@ $this->title = 'Sobre o Psilingo';
             <div class="row g-4">
                 <div class="col-12 col-md-6 col-lg-4 d-flex">
                     <div class="ps-card ps-member w-100 d-flex flex-column align-items-center text-center">
-                        <div class="ps-avatar" aria-hidden="true">J</div>
+                        <div class="ps-avatar" aria-hidden="true">A</div>
                         <h3 class="h5 mt-3 mb-2">Artem</h3>
                         <span class="ps-badge ps-badge-accent mb-3">role?</span>
                         <p class="ps-text mb-0">text</p>
@@ -88,7 +88,7 @@ $this->title = 'Sobre o Psilingo';
 
                 <div class="col-12 col-md-6 col-lg-4 d-flex">
                     <div class="ps-card ps-member w-100 d-flex flex-column align-items-center text-center">
-                        <div class="ps-avatar ps-avatar-2" aria-hidden="true">C1</div>
+                        <div class="ps-avatar ps-avatar-2" aria-hidden="true">J</div>
                         <h3 class="h5 mt-3 mb-2">João</h3>
                         <span class="ps-badge ps-badge-accent mb-3">role?</span>
                         <p class="ps-text mb-0">text.</p>
@@ -97,7 +97,7 @@ $this->title = 'Sobre o Psilingo';
 
                 <div class="col-12 col-md-6 col-lg-4 d-flex">
                     <div class="ps-card ps-member w-100 d-flex flex-column align-items-center text-center">
-                        <div class="ps-avatar ps-avatar-3" aria-hidden="true">C2</div>
+                        <div class="ps-avatar ps-avatar-3" aria-hidden="true">L</div>
                         <h3 class="h5 mt-3 mb-2">Luis</h3>
                         <span class="ps-badge ps-badge-accent mb-3">role?</span>
                         <p class="ps-text mb-0">text</p>

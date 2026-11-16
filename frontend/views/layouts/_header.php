@@ -62,13 +62,7 @@ $items = [
             'items' => $items,
         ],
     ) ?>
-    <?= Html::button(
-        '&#127769;',
-        [
-            'id' => 'theme-toggle',
-            'class' => 'btn btn-link nav-link fs-5',
-            'aria-label' => 'Switch to dark mode',
-        ],
-    ) ?>
+    
+
     <?php NavBar::end() ?>
 </header>

@@ -13,7 +13,7 @@ $this->title = 'Psilingo';
             <h1 class="ps-hero-title">Bem-vindo ao <span class="ps-gradient-text">Psilingo</span>!</h1>
             <p class="ps-lead mx-auto">A plataforma interativa de aprendizagem de línguas feita a pensar no teu futuro académico e profissional.</p>
             <div class="d-flex flex-column flex-sm-row justify-content-center gap-3 mt-4">
-                <a class="btn ps-btn-primary btn-lg" href="#idiomas">Começar Agora</a>
+                <a class="btn ps-btn-primary btn-lg" href="<?= \yii\helpers\Url::to(['site/signup']) ?>">Começar agora</a>
                 <a class="btn ps-btn-outline btn-lg" href="<?= \yii\helpers\Url::to(['site/about']) ?>">Saber Mais</a>
             </div>
         </div>
