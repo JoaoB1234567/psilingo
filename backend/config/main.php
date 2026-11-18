@@ -16,14 +16,13 @@ return [
     'modules' => [],
 
     /*
-     * Protege todos os controladores do backend.
+     * Proteção global de todas as páginas do backend.
      */
     'as access' => [
         'class' => \yii\filters\AccessControl::class,
 
         /*
-         * Não deixar estes módulos expostos em produção.
-         * Se não forem utilizados, é preferível removê-los completamente.
+         * Em produção, estes módulos devem estar desativados.
          */
         'except' => [
             'gii/*',
@@ -33,7 +32,7 @@ return [
         'rules' => [
             [
                 /*
-                 * O formulário de login e a página de erro são públicos.
+                 * Login e página de erro são acessíveis sem autenticação.
                  */
                 'controllers' => ['site'],
                 'actions' => ['login', 'error'],
@@ -41,7 +40,7 @@ return [
             ],
             [
                 /*
-                 * Apenas utilizadores autenticados podem terminar sessão.
+                 * Logout apenas para utilizadores autenticados.
                  */
                 'controllers' => ['site'],
                 'actions' => ['logout'],
@@ -50,31 +49,29 @@ return [
             ],
             [
                 /*
-                 * Todas as restantes páginas exigem explicitamente
-                 * a permissão accessBackend.
+                 * Todas as restantes páginas exigem accessBackend.
                  */
                 'allow' => true,
                 'roles' => ['accessBackend'],
             ],
         ],
 
-        'denyCallback' => static function (): Response {
+        'denyCallback' => static function () {
             /*
-             * Visitante não autenticado:
-             * o Yii envia-o para o login do backend.
+             * Visitante: vai para o login do backend.
              */
-            if (Yii::$app->user->isGuest) {
-                return Yii::$app->user->loginRequired();
+            if (\Yii::$app->user->isGuest) {
+                return \Yii::$app->user->loginRequired();
             }
 
             /*
-             * Utilizador autenticado, mas sem accessBackend:
-             * termina a sessão específica do backend e volta ao frontend.
+             * Utilizador autenticado sem permissão:
+             * termina a sessão do backend e volta ao frontend.
              */
-            Yii::$app->user->logout();
+            \Yii::$app->user->logout();
 
-            return Yii::$app->response->redirect(
-                Yii::$app->params['frontendUrl']
+            return \Yii::$app->response->redirect(
+                \Yii::$app->params['frontendUrl']
             );
         },
     ],
@@ -87,25 +84,40 @@ return [
         'user' => [
             'identityClass' => \common\models\User::class,
             'enableAutoLogin' => true,
+
             'identityCookie' => [
                 'name' => '_identity-backend',
                 'httpOnly' => true,
-                'secure' => true,
+
+                /*
+                 * Funciona em HTTP durante o desenvolvimento
+                 * e ativa Secure automaticamente em HTTPS.
+                 */
+                'secure' => \Yii::$app->request->isSecureConnection,
+
                 'sameSite' => 'Lax',
             ],
         ],
 
         'session' => [
             'name' => 'advanced-backend',
+
             'cookieParams' => [
                 'httpOnly' => true,
-                'secure' => true,
+
+                /*
+                 * Em HTTP será false.
+                 * Em HTTPS será true.
+                 */
+                'secure' => \Yii::$app->request->isSecureConnection,
+
                 'sameSite' => 'Lax',
             ],
         ],
 
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
+
             'targets' => [
                 [
                     'class' => \yii\log\FileTarget::class,

@@ -19,6 +19,7 @@ class SiteController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::class,
+
                 'rules' => [
                     [
                         'actions' => ['login', 'error'],
@@ -36,8 +37,10 @@ class SiteController extends Controller
                     ],
                 ],
             ],
+
             'verbs' => [
                 'class' => VerbFilter::class,
+
                 'actions' => [
                     'logout' => ['post'],
                 ],
@@ -64,7 +67,7 @@ class SiteController extends Controller
         /*
          * Se já existir uma sessão no backend:
          * - administrador: permanece no backend;
-         * - utilizador comum: termina a sessão e vai para o frontend.
+         * - utilizador comum: é enviado para o frontend.
          */
         if (!Yii::$app->user->isGuest) {
             if (Yii::$app->user->can('accessBackend')) {
@@ -81,10 +84,12 @@ class SiteController extends Controller
         $this->layout = 'blank';
         $model = new LoginForm();
 
-        if ($model->load(Yii::$app->request->post()) && $model->login()) {
+        if (
+            $model->load(Yii::$app->request->post())
+            && $model->login()
+        ) {
             /*
-             * O login/password pode estar correto, mas isso não significa
-             * que o utilizador tenha autorização para o backend.
+             * Login válido não significa acesso ao backend.
              */
             if (!Yii::$app->user->can('accessBackend')) {
                 Yii::$app->user->logout();
@@ -108,6 +113,8 @@ class SiteController extends Controller
     {
         Yii::$app->user->logout();
 
-        return $this->goHome();
+        return $this->redirect(
+            Yii::$app->params['frontendUrl']
+        );
     }
 }
