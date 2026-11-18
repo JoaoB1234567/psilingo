@@ -49,7 +49,7 @@ $items = [
             // Logótipo oficial do Psilingo carregado através da pasta web/images
             'brandLabel' => Html::img('@web/images/logo.png', [
                 'alt' => 'Psilingo',
-                'style' => 'height: 40px; width: auto;'
+                'style' => 'height: 80px; width: auto;'
             ]),
             'brandUrl' => Yii::$app->homeUrl,
             'options' => ['class' => 'navbar-expand-md navbar-dark bg-dark fixed-top']
