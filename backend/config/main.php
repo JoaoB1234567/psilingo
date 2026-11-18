@@ -12,41 +12,70 @@ return [
     'basePath' => dirname(__DIR__),
     'controllerNamespace' => 'backend\controllers',
     'bootstrap' => ['log'],
-    'layout' => 'adminlte', // Usa o backend/views/layouts/adminlte.php
+    'layout' => 'adminlte',
     'modules' => [],
 
-    // ACF global: protege TODOS os controladores do backend (incluindo os gerados pelo Gii)
+    /*
+     * Protege todos os controladores do backend.
+     */
     'as access' => [
         'class' => \yii\filters\AccessControl::class,
-        'except' => ['gii/*', 'debug/*'], // módulos de desenvolvimento
+
+        /*
+         * Não deixar estes módulos expostos em produção.
+         * Se não forem utilizados, é preferível removê-los completamente.
+         */
+        'except' => [
+            'gii/*',
+            'debug/*',
+        ],
+
         'rules' => [
             [
-                // Login e página de erro: qualquer pessoa
+                /*
+                 * O formulário de login e a página de erro são públicos.
+                 */
                 'controllers' => ['site'],
                 'actions' => ['login', 'error'],
                 'allow' => true,
             ],
             [
-                // Logout: qualquer utilizador autenticado
+                /*
+                 * Apenas utilizadores autenticados podem terminar sessão.
+                 */
                 'controllers' => ['site'],
                 'actions' => ['logout'],
                 'allow' => true,
                 'roles' => ['@'],
             ],
             [
-                // Todo o resto: só quem tem acesso ao back-office
-                // (clienteAutenticado não tem esta permissão)
+                /*
+                 * Todas as restantes páginas exigem explicitamente
+                 * a permissão accessBackend.
+                 */
                 'allow' => true,
                 'roles' => ['accessBackend'],
             ],
         ],
-        'denyCallback' => function ($rule, $action) {
-            if (\Yii::$app->user->isGuest) {
-                // Visitante -> login do backend
-                return \Yii::$app->user->loginRequired();
+
+        'denyCallback' => static function (): Response {
+            /*
+             * Visitante não autenticado:
+             * o Yii envia-o para o login do backend.
+             */
+            if (Yii::$app->user->isGuest) {
+                return Yii::$app->user->loginRequired();
             }
-            // Autenticado sem permissão (cliente) -> index do front-office
-            return \Yii::$app->response->redirect(\Yii::$app->params['frontendUrl']);
+
+            /*
+             * Utilizador autenticado, mas sem accessBackend:
+             * termina a sessão específica do backend e volta ao frontend.
+             */
+            Yii::$app->user->logout();
+
+            return Yii::$app->response->redirect(
+                Yii::$app->params['frontendUrl']
+            );
         },
     ],
 
@@ -54,15 +83,27 @@ return [
         'request' => [
             'csrfParam' => '_csrf-backend',
         ],
+
         'user' => [
             'identityClass' => \common\models\User::class,
             'enableAutoLogin' => true,
-            'identityCookie' => ['name' => '_identity-backend', 'httpOnly' => true],
+            'identityCookie' => [
+                'name' => '_identity-backend',
+                'httpOnly' => true,
+                'secure' => true,
+                'sameSite' => 'Lax',
+            ],
         ],
+
         'session' => [
-            // this is the name of the session cookie used for login on the backend
             'name' => 'advanced-backend',
+            'cookieParams' => [
+                'httpOnly' => true,
+                'secure' => true,
+                'sameSite' => 'Lax',
+            ],
         ],
+
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
             'targets' => [
@@ -72,25 +113,28 @@ return [
                 ],
             ],
         ],
+
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
+
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
-            'rules' => [
-            ],
+            'rules' => [],
         ],
+
         'view' => [
             'theme' => [
                 'pathMap' => [
                     '@app/views' => [
-                        '@app/views', // Procura primeiro nas vistas locais (ex: sidebar.php)
-                        '@vendor/hail812/yii2-adminlte3/src/views', // Se não existir localmente, usa o do vendor
+                        '@app/views',
+                        '@vendor/hail812/yii2-adminlte3/src/views',
                     ],
                 ],
             ],
         ],
     ],
+
     'params' => $params,
 ];

@@ -12,14 +12,8 @@ use yii\web\Controller;
 use yii\web\ErrorAction;
 use yii\web\Response;
 
-/**
- * Site controller
- */
 class SiteController extends Controller
 {
-    /**
-     * {@inheritdoc}
-     */
     public function behaviors(): array
     {
         return [
@@ -38,7 +32,7 @@ class SiteController extends Controller
                     [
                         'actions' => ['index'],
                         'allow' => true,
-                        'roles' => ['accessBackend'], // bloqueia quem só tem 'clienteAutenticado'
+                        'roles' => ['accessBackend'],
                     ],
                 ],
             ],
@@ -51,9 +45,6 @@ class SiteController extends Controller
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function actions(): array
     {
         return [
@@ -63,41 +54,47 @@ class SiteController extends Controller
         ];
     }
 
-    /**
-     * Displays homepage.
-     *
-     * @return string
-     */
     public function actionIndex(): string
     {
         return $this->render('index');
     }
 
-    /**
-     * Login action.
-     *
-     * @return string|Response
-     */
     public function actionLogin(): string|Response
     {
+        /*
+         * Se já existir uma sessão no backend:
+         * - administrador: permanece no backend;
+         * - utilizador comum: termina a sessão e vai para o frontend.
+         */
         if (!Yii::$app->user->isGuest) {
-            return Yii::$app->user->can('accessBackend')
-                ? $this->goHome()
-                : $this->redirect(Yii::$app->params['frontendUrl']);
+            if (Yii::$app->user->can('accessBackend')) {
+                return $this->goHome();
+            }
+
+            Yii::$app->user->logout();
+
+            return $this->redirect(
+                Yii::$app->params['frontendUrl']
+            );
         }
 
         $this->layout = 'blank';
-
         $model = new LoginForm();
+
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            if (Yii::$app->user->can('accessBackend')) {
-                return $this->goBack();
+            /*
+             * O login/password pode estar correto, mas isso não significa
+             * que o utilizador tenha autorização para o backend.
+             */
+            if (!Yii::$app->user->can('accessBackend')) {
+                Yii::$app->user->logout();
+
+                return $this->redirect(
+                    Yii::$app->params['frontendUrl']
+                );
             }
 
-            // Cliente: termina a sessão do backend e envia para o index do front-office
-            Yii::$app->user->logout();
-
-            return $this->redirect(Yii::$app->params['frontendUrl']);
+            return $this->goBack();
         }
 
         $model->password = '';
@@ -107,11 +104,6 @@ class SiteController extends Controller
         ]);
     }
 
-    /**
-     * Logout action.
-     *
-     * @return Response
-     */
     public function actionLogout(): Response
     {
         Yii::$app->user->logout();
