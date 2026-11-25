@@ -15,6 +15,8 @@ return [
     'layout' => 'adminlte',
     'modules' => [],
 
+    // ACF global: protege TODOS os controladores do backend (incluindo os gerados pelo Gii)
+    /*'as access' => [
     'as access' => [
         'class' => \yii\filters\AccessControl::class,
 
@@ -52,7 +54,7 @@ return [
                 \Yii::$app->params['frontendUrl']
             );
         },
-    ],
+    ],*/
 
     'components' => [
         'request' => [
