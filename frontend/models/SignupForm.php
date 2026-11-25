@@ -72,7 +72,8 @@ class SignupForm extends Model
             }
 
             // Envia o email de confirmação
-            return $this->sendEmail($mailer, $user, $supportEmail, $appName);
+            $this->sendEmail($mailer, $user, $supportEmail, $appName);
+            return true;
         }
 
         return null;
