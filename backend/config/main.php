@@ -16,7 +16,7 @@ return [
     'modules' => [],
 
     // ACF global: protege TODOS os controladores do backend (incluindo os gerados pelo Gii)
-    'as access' => [
+    /*'as access' => [
         'class' => \yii\filters\AccessControl::class,
         'except' => ['gii/*', 'debug/*'], // módulos de desenvolvimento
         'rules' => [
@@ -48,7 +48,7 @@ return [
             // Autenticado sem permissão (cliente) -> index do front-office
             return \Yii::$app->response->redirect(\Yii::$app->params['frontendUrl']);
         },
-    ],
+    ],*/
 
     'components' => [
         'request' => [
